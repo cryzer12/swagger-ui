@@ -202,7 +202,7 @@ export default class ObjectModel extends Component {
               </tbody></table>
           }
         </span>
-        <span className="brace-close">{ braceClose }</span>
+
       </ModelCollapse>
     </span>
   }

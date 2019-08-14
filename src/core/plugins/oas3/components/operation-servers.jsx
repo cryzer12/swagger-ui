@@ -81,7 +81,7 @@ export default class OperationServers extends React.Component {
     return <div className="opblock-section operation-servers">
       <div className="opblock-section-header">
         <div className="tab-header">
-          <h4 className="opblock-title">Servers</h4>
+          <h4 className="opblock-title">Серверы</h4>
         </div>
       </div>
       <div className="opblock-description-wrapper">

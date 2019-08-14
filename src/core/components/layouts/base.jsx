@@ -48,7 +48,7 @@ export default class BaseLayout extends React.Component {
     if(loadingStatus === "failed") {
       loadingMessage = <div className="info">
         <div className="loading-container">
-          <h4 className="title">Failed to load API definition.</h4>
+          <h4 className="title">Ошибка загрузки API.</h4>
           <Errors />
         </div>
       </div>

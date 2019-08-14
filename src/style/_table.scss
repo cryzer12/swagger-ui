@@ -19,8 +19,8 @@ table
 
                     &:first-of-type
                     {
-                        width: 174px;
-                        padding: 0 0 0 2em;
+                        width: 70px;
+                      padding: 0;
                     }
                 }
             }
@@ -53,7 +53,7 @@ table
                 &:first-of-type
                 {
                     max-width: 20%;
-                    min-width: 6em;
+                    min-width: 11em;
                     padding: 10px 0;
                 }
             }
@@ -171,5 +171,5 @@ table
 }
 
 .response-col_links {
-    min-width: 6em;
+    min-width: 11em;
 }

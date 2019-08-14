@@ -12,6 +12,7 @@ $gray-700: lighten($black, 31.25%); // #505050
 $gray-800: lighten($black, 25%); // #404040
 $gray-900: lighten($black, 18.75%); // #303030
 
+$header-color: #1666DE;
 $cod-gray: #1b1b1b;
 $bright-gray: #3b4151;
 $mako-gray: #41444e;
@@ -212,7 +213,7 @@ $table-parameter-deprecated-font-color: $color-danger !default;
 
 // Topbar
 
-$topbar-background-color: $cod-gray !default;
+$topbar-background-color: $header-color !default;
 
 $topbar-link-font-color: $white !default;
 

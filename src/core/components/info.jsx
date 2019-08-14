@@ -42,7 +42,7 @@ class Contact extends React.Component {
         { url && <div><Link href={ sanitizeUrl(url) } target="_blank">{ name } - Website</Link></div> }
         { email &&
           <Link href={sanitizeUrl(`mailto:${email}`)}>
-            { url ? `Send email to ${name}` : `Contact ${name}`}
+            { url ? `Send email to ${name}` : `Обратиться к ${name}`}
           </Link>
         }
       </div>

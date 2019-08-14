@@ -19,7 +19,7 @@ export default class ServersContainer extends React.Component {
 
     return servers && servers.size ? (
       <div>
-        <span className="servers-title">Servers</span>
+        <span className="servers-title">Серверы</span>
         <Servers
           servers={servers}
           currentServer={oas3Selectors.selectedServer()}

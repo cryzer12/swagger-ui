@@ -19,7 +19,7 @@ export default function Example(props) {
     <div className="example">
       {example.get("description") ? (
         <section className="example__section">
-          <div className="example__section-header">Example Description</div>
+          <div className="example__section-header">Пример описания</div>
           <p>
             <Markdown source={example.get("description")} />
           </p>
@@ -27,7 +27,7 @@ export default function Example(props) {
       ) : null}
       {showValue && example.has("value") ? (
         <section className="example__section">
-          <div className="example__section-header">Example Value</div>
+          <div className="example__section-header">Пример значения</div>
           <HighlightCode value={stringify(example.get("value"))} />
         </section>
       ) : null}
