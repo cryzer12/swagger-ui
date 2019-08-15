@@ -39,7 +39,7 @@ const devConfig = configBuilder(
     },
 
     devServer: {
-      port: 3200,
+      port: 3000,
       publicPath: "/",
       disableHostCheck: true, // for development within VMs
       stats: {

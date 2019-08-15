@@ -411,6 +411,10 @@ export const executeRequest = (req) =>
       }
     }
 
+
+    if (Array.isArray(req.requestBody.file)) {
+      req.requestBody = req.requestBody.file
+    }
     let parsedRequest = Object.assign({}, req)
     parsedRequest = fn.buildRequest(parsedRequest)
 

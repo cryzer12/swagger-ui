@@ -207,7 +207,7 @@ export class JsonSchema_array extends PureComponent {
             className={`btn btn-sm json-schema-form-item-add ${errors.length ? "invalid" : null}`}
             onClick={this.addItem}
           >
-            Add item
+            Добавить элемент
           </Button>
         ) : null }
       </div>

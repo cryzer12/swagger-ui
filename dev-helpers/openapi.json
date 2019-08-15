@@ -1,0 +1,794 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Астрал.Платформа",
+    "description": "Описание интерфейса взаимодействия с помощью модели событий",
+    "contact": {
+      "name": "Шестаков Д.А.",
+      "email": "shestakov_da@astral.ru"
+    },
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://test.platform.astral.ru",
+      "description": "Тестовый сервер"
+    },
+    {
+      "url": "http://demo.platform.astral.ru",
+      "description": "Демо-стенд"
+    }
+  ],
+  "security": [
+    {
+      "keyHeader": []
+    }
+  ],
+  "paths": {
+    "/packet": {
+      "summary": "Загрузка пакета файлов",
+      "post": {
+        "tags": ["Файлы и пакеты"],
+        "summary": "Загрузка нового пакета файлов",
+        "operationId": "packet-post",
+        "requestBody": {
+          "description": "Форма с одним или несколькими файлами, которые будут объединены в новый пакет",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Пакет успешно загружен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "packet": {
+                          "$ref": "#/components/schemas/packet_base"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Некорректный формат запроса",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packet/{packet_uuid}.tar.gz": {
+      "summary": "Скачивание пакета файлов",
+      "get": {
+        "tags": ["Файлы и пакеты"],
+        "summary": "Скачивание пакета файлов",
+        "operationId": "packet-get-gzip",
+        "parameters": [
+          {
+            "name": "packet_uuid",
+            "in": "path",
+            "description": "Идентификатор пакета, выданный при загрузке",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Все файлы пакета в виде одного архива",
+            "content": {
+              "application/gzip": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Некорректный формат запроса",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packet/{packet_uuid}.json": {
+      "summary": "Получение метаданных пакета файлов",
+      "get": {
+        "tags": ["Файлы и пакеты"],
+        "summary": "Получение метаданных пакета файлов",
+        "operationId": "packet-get-json",
+        "parameters": [
+          {
+            "name": "packet_uuid",
+            "in": "path",
+            "description": "Идентификатор пакета, выданный при загрузке",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/uuid"
+            }
+          },
+          {
+            "name": "journal",
+            "in": "query",
+            "description": "Признак необходимости получения протокола доступа к пакету",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Все метаданные пакета, в зависимости от указанных параметров",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "packet": {
+                          "$ref": "#/components/schemas/packet_full"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Некорректный формат запроса",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packet/{packet_uuid}/{file_uuid}": {
+      "summary": "Получение содержимого файла",
+      "get": {
+        "tags": ["Файлы и пакеты"],
+        "summary": "Получение содержимого файла",
+        "operationId": "file-get",
+        "parameters": [
+          {
+            "name": "packet_uuid",
+            "in": "path",
+            "description": "Идентификатор пакета, выданный при загрузке",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/uuid"
+            }
+          },
+          {
+            "name": "file_uuid",
+            "in": "path",
+            "description": "Идентификатор файла, выданный при загрузке",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Все метаданные файла, в зависимости от указанных параметров",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Некорректный формат запроса",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/packet/{packet_uuid}/{file_uuid}.json": {
+      "summary": "Получение метаданных файла",
+      "get": {
+        "tags": ["Файлы и пакеты"],
+        "summary": "Получение метаданных файла",
+        "operationId": "file-get-json",
+        "parameters": [
+          {
+            "name": "packet_uuid",
+            "in": "path",
+            "description": "Идентификатор пакета, выданный при загрузке",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/uuid"
+            }
+          },
+          {
+            "name": "file_uuid",
+            "in": "path",
+            "description": "Идентификатор файла, выданный при загрузке",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/uuid"
+            }
+          },
+          {
+            "name": "journal",
+            "in": "query",
+            "description": "Признак необходимости получения протокола доступа к файлу",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Все метаданные файла, в зависимости от указанных параметров",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "file": {
+                          "$ref": "#/components/schemas/file_full"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Некорректный формат запроса",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events": {
+      "summary": "Работа с событиями системы",
+      "get": {
+        "tags": ["События"],
+        "summary": "Получение новых событий",
+        "operationId": "events-get",
+        "parameters": [
+          {
+            "name": "timeout",
+            "in": "query",
+            "description": "Время ожидания результата, в секундах",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список новых событий",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "events": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/event_full"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Некорректный формат запроса",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["События"],
+        "summary": "Публикация событий",
+        "operationId": "events-post",
+        "requestBody": {
+          "description": "Форма со списком публикуемых событий",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/event_base"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Список новых событий",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "events": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/event_full"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Некорректный формат запроса",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "keyHeader": {
+        "type": "apiKey",
+        "description": "Индивидуальный токен для работы с API",
+        "name": "X-API-Key",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "uuid": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "token": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "journal": {
+        "type": "array",
+        "title": "Журнал",
+        "description": "Протокол доступа к объекту",
+        "items": {
+          "type": "object",
+          "title": "Действие с объектом",
+          "properties": {
+            "id": {
+              "$ref": "#/components/schemas/uuid"
+            },
+            "start": {
+              "title": "Момент начала действия",
+              "type": "string",
+              "format": "date-time"
+            },
+            "name": {
+              "title": "Заголовок произведенного действия",
+              "type": "string",
+              "pattern": "^(.*)$"
+            },
+            "tags": {
+              "title": "Список меток действия для поиска и фильтрации",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "member": {
+              "title": "ID участника, который произвел действие",
+              "type": "string",
+              "pattern": "^(.*)$"
+            },
+            "stages": {
+              "title": "ID сущности, над которой было произведено действие",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "wait": {
+                    "title": "Интервал времени, прошедший с момента старта действия",
+                    "type": "string",
+                    "pattern": "^(.*)$"
+                  },
+                  "name": {
+                    "title": "Наименование этапа",
+                    "type": "string",
+                    "pattern": "^(.*)$"
+                  },
+                  "type": {
+                    "title": "Тип сущности, затронутой действием",
+                    "type": "string",
+                    "pattern": "^(.*)$"
+                  },
+                  "enid": {
+                    "title": "Идентификатор сущности, затронутой действием",
+                    "type": "string",
+                    "pattern": "^(.*)$"
+                  }
+                },
+                "required": ["wait", "name"]
+              }
+            }
+          },
+          "required": ["id", "name", "tags", "start", "stages", "member"]
+        }
+      },
+      "response": {
+        "type": "object",
+        "title": "Ответ сервиса",
+        "description": "Универсальный ответ сервиса на запросы к API",
+        "externalDocs": {
+          "description": "RFC 7807",
+          "url": "https://tools.ietf.org/html/rfc7807"
+        },
+        "properties": {
+          "status": {
+            "title": "HTTP-статус ответа",
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 600
+          },
+          "type": {
+            "title": "Тип ошибки",
+            "description": "Ссылка на документацию по ошибке, или about:blank, если ошибки нет",
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string",
+            "title": "Заголовок",
+            "description": "Краткое описание результата запроса, не зависит от данных",
+            "pattern": "^(.*)$"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Описание ошибки",
+            "description": "Развернутое описание результата, зависит от данных",
+            "pattern": "^(.*)$"
+          }
+        },
+        "required": ["status", "type", "title"]
+      },
+      "acl": {
+        "type": "object",
+        "title": "Список контроля доступа",
+        "description": "Список сведений о том, кому и когда были выданы права на чтение и модификацию объекта",
+        "properties": {
+          "owner": {
+            "$ref": "#/components/schemas/uuid"
+          },
+          "access": {
+            "type": "object",
+            "title": "Записи прав доступа участников, в формате `memberID`: `rwx`, где rwx - маска доступа",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["owner", "access"]
+      },
+      "event_code": {
+        "type": "string",
+        "pattern": "^[a-z0-9_]{64}$"
+      },
+      "event_base": {
+        "type": "object",
+        "title": "События",
+        "description": "Общая структура, объединающая в себе все данные, которыми обмениваются участники платформы",
+        "properties": {
+          "code": {
+            "title": "Код типа события",
+            "description": "Каждый подключенный сервис публикует список допустимых кодов и их схемы",
+            "type": "string",
+            "pattern": "^(.*)$"
+          },
+          "consumer": {
+            "type": "array",
+            "title": "Получатели события",
+            "description": "ID участников системы, в т.ч. сервисов, которым предназначается событие",
+            "items": {
+              "type": "string"
+            }
+          },
+          "data": {
+            "title": "Данные события в виде объекта",
+            "description": "Схема публикуется сервисом и при формировании/разборе JSON должна определяться согласно коду события",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": ["code", "consumer", "data"]
+      },
+      "event_full": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/event_base"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/uuid"
+              },
+              "producer": {
+                "title": "Автор события",
+                "description": "ID участника системы, в т.ч. сервиса, который опубликовал событие. При публикации назначается автоматически",
+                "type": "string",
+                "pattern": "^(.*)$"
+              }
+            },
+            "required": ["id", "producer"]
+          }
+        ]
+      },
+      "file_base": {
+        "type": "object",
+        "title": "Файл",
+        "description": "Файл во внутреннем хранилище Платформы, который можно скачать или использовать в сервисах",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/uuid"
+          },
+          "name": {
+            "type": "string",
+            "title": "Название",
+            "description": "Оригинальное название файла, заданное участником или сервисом при загрузке",
+            "pattern": "^(.*)$"
+          },
+          "mime": {
+            "type": "string",
+            "title": "Тип содержимого",
+            "pattern": "^(.*)$"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Размер в байтах"
+          },
+          "created": {
+            "title": "Момент создания файла",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "title": "Момент последнего обновления",
+            "type": "string",
+            "format": "date-time"
+          },
+          "acl": {
+            "$ref": "#/components/schemas/acl"
+          }
+        },
+        "required": ["id", "name", "mime", "size", "created", "updated"]
+      },
+      "file_full": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/file_base"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "journal": {
+                "$ref": "#/components/schemas/journal"
+              }
+            }
+          }
+        ]
+      },
+      "packet_base": {
+        "type": "object",
+        "title": "Пакет файлов",
+        "description": "Метаданные пакета из 1 или более файлов в системе",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/uuid"
+          },
+          "created": {
+            "title": "Момент создания пакета",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "title": "Момент последнего обновления",
+            "type": "string",
+            "format": "date-time"
+          },
+          "files": {
+            "title": "Подробная информация по файлам",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/file_base"
+            }
+          },
+          "acl": {
+            "$ref": "#/components/schemas/acl"
+          }
+        },
+        "required": ["id", "created", "updated", "files"]
+      },
+      "packet_full": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/packet_base"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "journal": {
+                "$ref": "#/components/schemas/journal"
+              }
+            }
+          }
+        ]
+      },
+      "service": {
+        "type": "object",
+        "title": "Сервис Платформы",
+        "description": "Один из множества подключенных к платформе сервисов",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/uuid"
+          },
+          "name": {
+            "type": "string",
+            "title": "Наименование сервиса",
+            "pattern": "^(.*)$"
+          },
+          "member": {
+            "type": "array",
+            "title": "ID участника",
+            "minLength": 1,
+            "description": "Внутренние идентификаторы участника в сервисе. В зависимости от сервиса, может быть несколько",
+            "items": {
+              "$ref": "#/components/schemas/uuid"
+            }
+          },
+          "consume": {
+            "type": "array",
+            "title": "Типы событий, потребляемые сервисом",
+            "items": {
+              "$ref": "#/components/schemas/event_code"
+            }
+          },
+          "produce": {
+            "type": "array",
+            "title": "Типы событий, генерируемые сервисом",
+            "items": {
+              "$ref": "#/components/schemas/event_code"
+            }
+          }
+        },
+        "required": ["id", "name", "consume", "produce"]
+      },
+      "member": {
+        "title": "Участник системы",
+        "description": "Участник системы - партнер или конечный пользователь, обладающий собственным сертификатом и закрытым ключом для него",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/uuid"
+          },
+          "token": {
+            "$ref": "#/components/schemas/token"
+          },
+          "name": {
+            "type": "string",
+            "title": "Имя учатника",
+            "description": "Полное внутреннее наименование участника, установленное при регистрации или в личном кабинете",
+            "pattern": "^(.*)$"
+          },
+          "services": {
+            "type": "array",
+            "minLength": 1,
+            "title": "Идентификаторы учатника в сервисах Платформы. По одному на тип сервиса",
+            "items": {
+              "$ref": "#/components/schemas/service"
+            }
+          }
+        },
+        "required": ["id", "name", "token"]
+      },
+      "reg.new.dss.certificate.request": {
+        "$ref": "/schemas/reg/newDssUserSchema.json"
+      }
+    }
+  }
+}

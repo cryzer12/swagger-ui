@@ -1,10 +1,10 @@
 .info
 {
-    margin: 50px 0;
+    margin: 24px 0;
 
     hgroup.main
     {
-        margin: 0 0 20px 0;
+        margin: 0 0 16px 0;
         a
         {
             font-size: 12px;
@@ -16,7 +16,7 @@
     }
     p, li, table
     {
-        font-size: 14px;
+        font-size: 16px;
 
         @include text_body();
     }
@@ -28,15 +28,15 @@
 
     a
     {
-        font-size: 14px;
+        font-size: 16px;
 
         transition: all .4s;
 
-        @include text_body($info-link-font-color);
+        color: rgb(0, 100, 200);
 
         &:hover
         {
-            color: darken($info-link-font-color-hover, 15%);
+            color: #2196f3;
         }
     }
     > div
@@ -71,7 +71,7 @@
 
             display: inline-block;
 
-            margin: 0 0 0 5px;
+            margin: 0 0 0 4px;
             padding: 2px 4px;
 
             vertical-align: super;

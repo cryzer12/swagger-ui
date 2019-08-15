@@ -12,10 +12,10 @@ $gray-700: lighten($black, 31.25%); // #505050
 $gray-800: lighten($black, 25%); // #404040
 $gray-900: lighten($black, 18.75%); // #303030
 
-$header-color: #1666DE;
+$header-color: #fff;
 $cod-gray: #1b1b1b;
-$bright-gray: #3b4151;
-$mako-gray: #41444e;
+$bright-gray: #2e3e56;
+$mako-gray: rgba(0, 0, 0, 0.12);
 $waterloo-gray: #7d8492;
 $alto-gray: #d9d9d9;
 $mercury-gray: #e4e4e4;
@@ -58,21 +58,21 @@ $auth-container-border-color: $gray-50 !default;
 
 // Buttons
 
-$btn-background-color: transparent !default;
+$btn-background-color: #fff !default;
 $btn-border-color: $gray-400 !default;
 $btn-font-color: inherit !default;
 $btn-box-shadow-color: $black !default;
 
-$btn-authorize-background-color: transparent !default;
+$btn-authorize-background-color: #fff !default;
 $btn-authorize-border-color: $_color-post !default;
 $btn-authorize-font-color: $_color-post !default;
 $btn-authorize-svg-fill-color: $_color-post !default;
 
-$btn-cancel-background-color: transparent !default;
+$btn-cancel-background-color: #fff !default;
 $btn-cancel-border-color: $color-warning !default;
 $btn-cancel-font-color: $color-warning !default;
 
-$btn-execute-background-color: transparent !default;
+$btn-execute-background-color: #fff !default;
 $btn-execute-border-color: $color-info !default;
 $btn-execute-font-color: $white !default;
 $btn-execute-background-color-alt: $color-info !default;
@@ -217,9 +217,9 @@ $topbar-background-color: $header-color !default;
 
 $topbar-link-font-color: $white !default;
 
-$topbar-download-url-wrapper-element-border-color: $apple-green !default;
+$topbar-download-url-wrapper-element-border-color: #0056d6 !default;
 
-$topbar-download-url-button-background-color: $apple-green !default;
+$topbar-download-url-button-background-color: #145dd6 !default;
 $topbar-download-url-button-font-color: $white !default;
 
 // Type

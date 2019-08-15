@@ -8,8 +8,8 @@
     transition: all .3s;
 
     border: 2px solid $btn-border-color;
-    border-radius: 4px;
-    background: transparent;
+    border-radius: 45px;
+    background: #fff;
     box-shadow: 0 1px 2px rgba($btn-box-shadow-color,.1);
 
     @include text_headline();
@@ -44,7 +44,7 @@
         line-height: 1;
 
         display: inline;
-
+        transition: all 200ms;
         color: $btn-authorize-font-color;
         border-color: $btn-authorize-border-color;
         background-color: $btn-authorize-background-color;
@@ -59,7 +59,19 @@
         svg
         {
             fill: $btn-authorize-svg-fill-color;
+            transition: all 200ms;
         }
+      &:hover{
+        background-color: $btn-authorize-border-color;
+        color: #fff;
+        svg
+        {
+          fill: #fff;
+        }
+      }
+      &:active{
+        transform: scale(0.97);
+      }
     }
 
     &.execute

@@ -104,7 +104,6 @@ section.models
 {
     margin: 30px 0;
 
-    border: 1px solid rgba($section-models-border-color, .3);
     border-radius: 4px;
 
     &.is-open
@@ -113,8 +112,6 @@ section.models
         h4
         {
             margin: 0 0 5px 0;
-
-            border-bottom: 1px solid rgba($section-models-isopen-h4-border-bottom-color, .3);
         }
     }
     h4
@@ -209,7 +206,7 @@ section.models
     display: inline-block;
 
     border-radius: 4px;
-    background: rgba($section-models-model-box-background-color,.1);
+    background: #f3f6ff;
 
     .model-jump-to-path
     {
