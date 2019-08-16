@@ -119,7 +119,7 @@ export default class Oauth2 extends React.Component {
         { !this.state.appName ? null : <h5>Application: { this.state.appName } </h5> }
         { description && <Markdown source={ schema.get("description") } /> }
 
-        { isAuthorized && <h6>Authorized</h6> }
+        { isAuthorized && <h5>Авторизованный</h5> }
 
         { ( flow === IMPLICIT || flow === ACCESS_CODE ) && <p>Authorization URL: <code>{ schema.get("authorizationUrl") }</code></p> }
         { ( flow === PASSWORD || flow === ACCESS_CODE || flow === APPLICATION ) && <p>Token URL:<code> { schema.get("tokenUrl") }</code></p> }
@@ -155,8 +155,8 @@ export default class Oauth2 extends React.Component {
                   isAuthorized ? <code> { this.state.passwordType } </code>
                     : <Col tablet={10} desktop={10}>
                       <select id="password_type" data-name="passwordType" onChange={ this.onInputChange }>
-                        <option value="basic">Authorization header</option>
-                        <option value="request-body">Request body</option>
+                        <option value="basic">Заголовок авторизации</option>
+                        <option value="request-body">Тело запроса</option>
                       </select>
                     </Col>
                 }
@@ -232,12 +232,12 @@ export default class Oauth2 extends React.Component {
           } )
         }
         <div className="auth-btn-wrapper">
+          <Button className="btn modal-btn auth btn-done" onClick={ this.close }>Закрыть</Button>
         { isValid &&
-          ( isAuthorized ? <Button className="btn modal-btn auth authorize" onClick={ this.logout }>Выйти</Button>
+          ( isAuthorized ? <Button className="btn modal-btn auth authorize execute " onClick={ this.logout }>Выйти</Button>
         : <Button className="btn modal-btn auth authorize" onClick={ this.authorize }>Авторизация</Button>
           )
         }
-          <Button className="btn modal-btn auth btn-done" onClick={ this.close }>Закрыть</Button>
         </div>
 
       </div>

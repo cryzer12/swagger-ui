@@ -81,11 +81,11 @@ export default class Auths extends React.Component {
               }).toArray()
             }
             <div className="auth-btn-wrapper">
+              <Button className="btn modal-btn auth btn-done" onClick={ this.close }>Закрыть</Button>
               {
-                nonOauthDefinitions.size === authorizedAuth.size ? <Button className="btn modal-btn auth" onClick={ this.logoutClick }>Выйти</Button>
+                nonOauthDefinitions.size === authorizedAuth.size ? <Button className="btn modal-btn auth execute " onClick={ this.logoutClick }>Выйти</Button>
               : <Button type="submit" className="btn modal-btn auth authorize">Авторизация</Button>
               }
-              <Button className="btn modal-btn auth btn-done" onClick={ this.close }>Закрыть</Button>
             </div>
           </form>
         }

@@ -1,19 +1,24 @@
 import React from "react"
+import ReactDOM from "react-dom"
 import PropTypes from "prop-types"
 
 export default class AuthorizationPopup extends React.Component {
   close =() => {
     let { authActions } = this.props
-
     authActions.showDefinitions(false)
+  }
+  componentWillMount() {
+    document.body.style.overflowY = "hidden"
+  }
+  componentWillUnmount() {
+    document.body.style.overflowY = "auto"
   }
 
   render() {
     let { authSelectors, authActions, getComponent, errSelectors, specSelectors, fn: { AST = {} } } = this.props
     let definitions = authSelectors.shownDefinitions()
     const Auths = getComponent("auths")
-
-    return (
+    return ReactDOM.createPortal(
       <div className="dialog-ux">
         <div className="backdrop-ux"></div>
         <div className="modal-ux">
@@ -45,9 +50,9 @@ export default class AuthorizationPopup extends React.Component {
             </div>
           </div>
         </div>
-      </div>
-    )
-  }
+      </div>,
+    document.body
+  )}
 
   static propTypes = {
     fn: PropTypes.object.isRequired,

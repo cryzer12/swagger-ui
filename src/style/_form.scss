@@ -1,16 +1,27 @@
 select {
+  display: block;
   font-size: 14px;
-  font-weight: 500;
-  outline: none;
-  padding: 5px 40px 5px 10px;
-
-  border: 2px solid $form-select-border-color;
-  border-radius: 45px;
-  background: #fff url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+ICAgIDxwYXRoIGQ9Ik0xMy40MTggNy44NTljLjI3MS0uMjY4LjcwOS0uMjY4Ljk3OCAwIC4yNy4yNjguMjcyLjcwMSAwIC45NjlsLTMuOTA4IDMuODNjLS4yNy4yNjgtLjcwNy4yNjgtLjk3OSAwbC0zLjkwOC0zLjgzYy0uMjctLjI2Ny0uMjctLjcwMSAwLS45NjkuMjcxLS4yNjguNzA5LS4yNjguOTc4IDBMMTAgMTFsMy40MTgtMy4xNDF6Ii8+PC9zdmc+) right 10px center no-repeat;
-  background-size: 20px;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
-  @include text_headline();
+  font-family: sans-serif;
+  color: #444;
+  line-height: 1.3;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  border: 1px solid #aaa;
+  border-radius: .5em;
+  -moz-appearance: none;
+  -webkit-appearance: none;
   appearance: none;
+  background-color: #fff;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat, repeat;
+  background-position: right .7em top 50%, 0 0;
+  background-size: .65em auto, 100%;
+  outline: none;
+  padding: 4px 32px 4px 8px;
+  font-weight: 500;
+  @include text_headline();
 
   &[multiple] {
     margin: 5px 0;
@@ -21,6 +32,21 @@ select {
 
   &.invalid {
     @include invalidFormElement();
+  }
+
+  &::-ms-expand {
+    display: none;
+  }
+  &:hover {
+    border-color: #888;
+  }
+  &:focus {
+    border-color: #aaa;
+    color: #222;
+    outline: none;
+  }
+  & option {
+    font-weight:normal;
   }
 }
 
@@ -35,8 +61,6 @@ label {
   font-size: 12px;
   font-weight: bold;
 
-  margin: 0 0 5px 0;
-
   @include text_headline();
 }
 
@@ -50,10 +74,17 @@ textarea {
   min-width: 100px;
   margin: 5px 5px 5px 0;
   padding: 8px 10px;
-
-  border: 1px solid $form-input-border-color;
+  outline: none;
+  border: 2px solid $form-input-border-color;
   border-radius: 4px;
   background: $form-input-background-color;
+
+  &:hover{
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+  }
+  &:focus{
+    border: 2px solid #145dd6;
+  }
   @media (max-width: 768px) {
     max-width: 175px;
   }
@@ -73,6 +104,12 @@ select {
     background-color: #fafafa;
     color: #888;
     cursor: not-allowed;
+    &:hover{
+      box-shadow: none;
+    }
+    &:focus{
+      border: none;
+    }
   }
 }
 
@@ -118,7 +155,7 @@ textarea {
   border: none;
   border-radius: 4px;
   outline: none;
-  background: rgba($form-textarea-background-color, .8);
+  color: #3d4261;
 
   @include text_code();
 
@@ -138,7 +175,7 @@ textarea {
     border-radius: 4px;
     background: $form-textarea-curl-background-color;
 
-    @include text_code($form-textarea-curl-font-color);
+    color: #3d4261;
   }
 }
 
@@ -194,4 +231,102 @@ textarea {
       background: $form-checkbox-background-color url(data:image/svg+xml,%0A%3Csvg%20width%3D%2210px%22%20height%3D%228px%22%20viewBox%3D%223%207%2010%208%22%20version%3D%221.1%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%3E%0A%20%20%20%20%3C%21--%20Generator%3A%20Sketch%2042%20%2836781%29%20-%20http%3A//www.bohemiancoding.com/sketch%20--%3E%0A%20%20%20%20%3Cdesc%3ECreated%20with%20Sketch.%3C/desc%3E%0A%20%20%20%20%3Cdefs%3E%3C/defs%3E%0A%20%20%20%20%3Cpolygon%20id%3D%22Rectangle-34%22%20stroke%3D%22none%22%20fill%3D%22%2341474E%22%20fill-rule%3D%22evenodd%22%20points%3D%226.33333333%2015%203%2011.6666667%204.33333333%2010.3333333%206.33333333%2012.3333333%2011.6666667%207%2013%208.33333333%22%3E%3C/polygon%3E%0A%3C/svg%3E) center center no-repeat;
     }
   }
+}
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+  max-width: 80%;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 8px 0.75rem;
+}
+
+.no-js .inputfile + label {
+  display: none;
+}
+
+.inputfile + label * {
+  /* pointer-events: none; */
+  /* in case of FastClick lib use */
+}
+
+.inputfile + label svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: currentColor;
+  margin-top: -0.25em;
+  /* 4px */
+  margin-right: 0.25em;
+  /* 4px */
+}
+
+
+/* style 6 */
+
+.inputfile-6 + label {
+  color: #2e3e56;
+}
+
+.inputfile-6 + label {
+  outline: none;
+  border-radius: 25px;
+  border: 1px solid #4990e2;
+  background-color: #fff;
+  padding: 0;
+}
+
+.inputfile-6:focus + label,
+.inputfile-6.has-focus + label,
+.inputfile-6 + label:hover {
+  border-color: #145dd6;
+}
+
+.inputfile-6 + label span,
+.inputfile-6 + label strong {
+  padding:  8px 1rem;
+}
+
+.inputfile-6 + label span {
+  width: 250px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.inputfile-6 + label strong {
+  height: 100%;
+  color: #fff;
+  background-color: #4990e2;
+  display: inline-block;
+}
+
+.inputfile-6:focus + label strong,
+.inputfile-6.has-focus + label strong,
+.inputfile-6 + label:hover strong {
+  background-color: #145dd6;
+}
+
+@media screen and (max-width: 50em) {
+  .inputfile-6 + label strong {
+    display: block;
+  }
+}
+.flex-container{
+  display: flex;
+  align-items: center;
+  margin: 0 0 10px;
 }

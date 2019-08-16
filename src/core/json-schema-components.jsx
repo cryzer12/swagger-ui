@@ -19,6 +19,7 @@ const JsonSchemaPropShape = {
   dispatchInitialValue: PropTypes.bool,
   description: PropTypes.any,
   disabled: PropTypes.bool,
+  index: PropTypes.number
 }
 
 const JsonSchemaDefaultProps = {
@@ -65,7 +66,7 @@ export class JsonSchema_string extends Component {
   }
   onEnumChange = (val) => this.props.onChange(val)
   render() {
-    let { getComponent, value, schema, errors, required, description, disabled } = this.props
+    let { getComponent, value, schema, errors, required, description, disabled, index } = this.props
     let enumValue = schema["enum"]
 
     errors = errors.toJS ? errors.toJS() : []
@@ -84,7 +85,9 @@ export class JsonSchema_string extends Component {
     const Input = getComponent("Input")
     if (schema["type"] === "file") {
       return (<Input type="file"
-                     className={ errors.length ? "invalid" : ""}
+                     index={index}
+                     value={value}
+                     className={`inputfile inputfile-6 ${errors.length ? "invalid" : ""}`}
                      title={ errors.length ? errors : ""}
                      onChange={ this.onChange }
                      disabled={isDisabled}/>)
@@ -183,20 +186,22 @@ export class JsonSchema_array extends PureComponent {
               if (err.length) errors = [ err[0].error + i ]
             }
           return (
-            <div key={i} className="json-schema-form-item">
+            <div key={i} className="json-schema-form-item flex-container">
               <JsonSchemaForm 
                 fn={fn}
                 getComponent={getComponent}
                 value={item}
+                index={i}
                 onChange={(val) => this.onItemChange(val, i)}
                 schema={schema}
                 disabled={disabled}
               />
               { !disabled ? (
                 <Button
-                  className="btn btn-sm json-schema-form-item-remove"
+                  style={{marginLeft: "10px"}}
+                  className="btn btn-sm json-schema-form-item-remove cancel"
                   onClick={()=> this.removeItem(i)}
-                > - </Button>
+                > Удалить </Button>
               ) : null }
             </div>
             )
@@ -204,7 +209,7 @@ export class JsonSchema_array extends PureComponent {
         }
         { !disabled ? (
           <Button
-            className={`btn btn-sm json-schema-form-item-add ${errors.length ? "invalid" : null}`}
+            className={`btn btn-sm json-schema-form-item-add execute ${errors.length ? "invalid" : null}`}
             onClick={this.addItem}
           >
             Добавить элемент

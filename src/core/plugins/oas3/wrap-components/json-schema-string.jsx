@@ -6,15 +6,17 @@ export default OAS3ComponentWrapFactory(({ Ori, ...props }) => {
     schema,
     getComponent,
     errors,
-    onChange
+    onChange,
+    index
   } = props
 
   const { type, format } = schema
   const Input = getComponent("Input")
-
   if(type === "string" && (format === "binary" || format === "base64")) {
     return <Input type="file"
-                   className={ errors.length ? "invalid" : ""}
+                  index={index}
+                  inputValue={props.value}
+                   className={`inputfile inputfile-6 ${errors.length ? "invalid" : ""}`}
                    title={ errors.length ? errors : ""}
                    onChange={(e) => {
                      onChange(e.target.files[0])

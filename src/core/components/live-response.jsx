@@ -6,7 +6,7 @@ import { Iterable } from "immutable"
 const Headers = ( { headers } )=>{
   return (
     <div>
-      <h5>Response headers</h5>
+      <h5>Заголовки ответа</h5>
       <pre>{headers}</pre>
     </div>)
 }
@@ -17,8 +17,8 @@ Headers.propTypes = {
 const Duration = ( { duration } ) => {
   return (
     <div>
-      <h5>Request duration</h5>
-      <pre>{duration} ms</pre>
+      <h5>Время запроса</h5>
+      <pre>{duration} мс</pre>
     </div>
   )
 }
@@ -73,18 +73,18 @@ export default class LiveResponse extends React.Component {
       <div>
         { curlRequest && <Curl request={ curlRequest }/> }
         { url && <div>
-            <h4>Request URL</h4>
+            <h4>Запрос URL</h4>
             <div className="request-url">
               <pre>{url}</pre>
             </div>
           </div>
         }
-        <h4>Server response</h4>
+        <h4>Ответ сервера</h4>
         <table className="responses-table live-responses-table">
           <thead>
           <tr className="responses-header">
-            <td className="col col_header response-col_status">Code</td>
-            <td className="col col_header response-col_description">Details</td>
+            <td className="col col_header response-col_status">Код</td>
+            <td className="col col_header response-col_description">Детали</td>
           </tr>
           </thead>
           <tbody>

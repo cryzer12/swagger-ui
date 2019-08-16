@@ -10,7 +10,7 @@ export class Container extends React.Component {
     let { fullscreen, full, ...rest } = this.props
     // Normal element
 
-    if(fullscreen)
+    if (fullscreen)
       return <section {...rest}/>
 
     let containerClass = "swagger-container" + (full ? "-full" : "")
@@ -23,14 +23,14 @@ export class Container extends React.Component {
 Container.propTypes = {
   fullscreen: PropTypes.bool,
   full: PropTypes.bool,
-  className: PropTypes.string
+  className: PropTypes.string,
 }
 
 const DEVICES = {
   "mobile": "",
   "tablet": "-tablet",
   "desktop": "-desktop",
-  "large": "-hd"
+  "large": "-hd",
 }
 
 export class Col extends React.Component {
@@ -50,7 +50,7 @@ export class Col extends React.Component {
       ...rest
     } = this.props
 
-    if(hide && !keepContents)
+    if (hide && !keepContents)
       return <span/>
 
     let classesAr = []
@@ -60,10 +60,10 @@ export class Col extends React.Component {
         continue
       }
       let deviceClass = DEVICES[device]
-      if(device in this.props) {
+      if (device in this.props) {
         let val = this.props[device]
 
-        if(val < 1) {
+        if (val < 1) {
           classesAr.push("none" + deviceClass)
           continue
         }
@@ -76,7 +76,7 @@ export class Col extends React.Component {
     let classes = xclass(rest.className, ...classesAr)
 
     return (
-      <section {...rest} style={{display: hide ? "none": null}} className={classes}/>
+      <section {...rest} style={{ display: hide ? "none" : null }} className={classes}/>
     )
   }
 
@@ -89,33 +89,33 @@ Col.propTypes = {
   tablet: PropTypes.number,
   desktop: PropTypes.number,
   large: PropTypes.number,
-  className: PropTypes.string
+  className: PropTypes.string,
 }
 
 export class Row extends React.Component {
 
   render() {
-    return <div {...this.props} className={xclass(this.props.className, "wrapper")} />
+    return <div {...this.props} className={xclass(this.props.className, "wrapper")}/>
   }
 
 }
 
 Row.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 }
 
 export class Button extends React.Component {
 
   static propTypes = {
-    className: PropTypes.string
+    className: PropTypes.string,
   }
 
   static defaultProps = {
-    className: ""
+    className: "",
   }
 
   render() {
-    return <button {...this.props} className={xclass(this.props.className, "button")} />
+    return <button {...this.props} className={xclass(this.props.className, "button")}/>
   }
 
 }
@@ -123,7 +123,19 @@ export class Button extends React.Component {
 
 export const TextArea = (props) => <textarea {...props} />
 
-export const Input = (props) => <input {...props} />
+export const Input = (props) => {
+  const { inputValue, index, type } = props
+  console.log(type === "file")
+    return (type === "file") ?
+      (<>
+        <input {...props} id={`file${index}`}/>
+        <label htmlFor={`file${index}`}><span>{inputValue && inputValue.name}</span><strong>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17">
+            <path
+              d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/>
+          </svg>
+          Загрузить файл&hellip;</strong></label></>) : (<input {...props} />)
+}
 
 export class Select extends React.Component {
   static propTypes = {
@@ -138,7 +150,7 @@ export class Select extends React.Component {
 
   static defaultProps = {
     multiple: false,
-    allowEmptyValue: true
+    allowEmptyValue: true,
   }
 
   constructor(props, context) {
@@ -162,38 +174,39 @@ export class Select extends React.Component {
 
 
     if (multiple) {
-      value = options.filter(function (option) {
-          return option.selected
-        })
-        .map(function (option){
+      value = options.filter(function(option) {
+        return option.selected
+      })
+        .map(function(option) {
           return option.value
         })
     } else {
       value = e.target.value
     }
 
-    this.setState({value: value})
+    this.setState({ value: value })
 
     onChange && onChange(value)
   }
 
   componentWillReceiveProps(nextProps) {
     // TODO: this puts us in a weird area btwn un/controlled selection... review
-    if(nextProps.value !== this.props.value) {
+    if (nextProps.value !== this.props.value) {
       this.setState({ value: nextProps.value })
     }
   }
 
-  render(){
+  render() {
     let { allowedValues, multiple, allowEmptyValue, disabled } = this.props
     let value = this.state.value?.toJS?.() || this.state.value
 
     return (
-      <select className={this.props.className} multiple={ multiple } value={value} onChange={ this.onChange } disabled={disabled} >
-        { allowEmptyValue ? <option value="">--</option> : null }
+      <select className={this.props.className} multiple={multiple} value={value} onChange={this.onChange}
+              disabled={disabled}>
+        {allowEmptyValue ? <option value="">--</option> : null}
         {
-          allowedValues.map(function (item, key) {
-            return <option key={ key } value={ String(item) }>{ String(item) }</option>
+          allowedValues.map(function(item, key) {
+            return <option key={key} value={String(item)}>{String(item)}</option>
           })
         }
       </select>
@@ -210,13 +223,14 @@ export class Link extends React.Component {
 }
 
 Link.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 }
 
-const NoMargin = ({children}) => <div style={{height: "auto", border: "none", margin: 0, padding: 0}}> {children} </div>
+const NoMargin = ({ children }) => <div
+  style={{ height: "auto", border: "none", margin: 0, padding: 0 }}> {children} </div>
 
 NoMargin.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 }
 
 export class Collapse extends React.Component {
@@ -224,16 +238,16 @@ export class Collapse extends React.Component {
   static propTypes = {
     isOpened: PropTypes.bool,
     children: PropTypes.node.isRequired,
-    animated: PropTypes.bool
+    animated: PropTypes.bool,
   }
 
   static defaultProps = {
     isOpened: false,
-    animated: false
+    animated: false,
   }
 
   renderNotAnimated() {
-    if(!this.props.isOpened)
+    if (!this.props.isOpened)
       return <noscript/>
     return (
       <NoMargin>
@@ -245,7 +259,7 @@ export class Collapse extends React.Component {
   render() {
     let { animated, isOpened, children } = this.props
 
-    if(!animated)
+    if (!animated)
       return this.renderNotAnimated()
 
     children = isOpened ? children : null

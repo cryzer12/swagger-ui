@@ -82,9 +82,9 @@ export default class ResponseBody extends React.PureComponent {
         }
 
         if(win.navigator && win.navigator.msSaveOrOpenBlob) {
-            bodyEl = <div><a href={ href } onClick={() => win.navigator.msSaveOrOpenBlob(blob, download)}>{ "Download file" }</a></div>
+            bodyEl = <div><a href={ href } onClick={() => win.navigator.msSaveOrOpenBlob(blob, download)}>{ "Скачать файл" }</a></div>
         } else {
-            bodyEl = <div><a href={ href } download={ download }>{ "Download file" }</a></div>
+            bodyEl = <div><a href={ href } download={ download }>{ "Скачать файл" }</a></div>
         }
       } else {
         bodyEl = <pre>Download headers detected but your browser does not support downloading binary via XHR (Blob).</pre>

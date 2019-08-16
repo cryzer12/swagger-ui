@@ -61,7 +61,9 @@ export default class HighlightCode extends Component {
           ref={this.initializeComponent}
           onWheel={this.preventYScrollingBeyondElement}
           className={className + " microlight"}>
+          <code className="html">
           {value}
+          </code>
         </pre>
       </div>
     )

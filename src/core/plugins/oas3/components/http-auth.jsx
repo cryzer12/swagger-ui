@@ -66,7 +66,7 @@ export default class HttpAuth extends React.Component {
             (http, Basic)
             <JumpToPath path={[ "securityDefinitions", name ]} />
           </h4>
-        { username && <h6>Authorized</h6> }
+        { username && <h5>Авторизованный</h5> }
         <Row>
           <Markdown source={ schema.get("description") } />
         </Row>
@@ -105,7 +105,7 @@ export default class HttpAuth extends React.Component {
               (http, Bearer)
               <JumpToPath path={[ "securityDefinitions", name ]} />
             </h4>
-            { value && <h6>Authorized</h6>}
+            { value && <h5>Авторизованный</h5>}
             <Row>
               <Markdown source={ schema.get("description") } />
             </Row>

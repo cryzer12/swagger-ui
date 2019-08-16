@@ -12,7 +12,7 @@ export default class Clear extends Component {
   render(){
     return (
       <button className="btn btn-clear opblock-control__btn" onClick={ this.onClick }>
-        Clear
+        Очистить
       </button>
     )
   }
