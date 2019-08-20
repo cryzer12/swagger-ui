@@ -125,7 +125,6 @@ export const TextArea = (props) => <textarea {...props} />
 
 export const Input = (props) => {
   const { inputValue, index, type } = props
-  console.log(type === "file")
     return (type === "file") ?
       (<>
         <input {...props} id={`file${index}`}/>

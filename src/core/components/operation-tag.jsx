@@ -61,14 +61,14 @@ export default class OperationTag extends React.Component {
         <h4
           onClick={() => layoutActions.show(isShownKey, !showTag)}
           className={!tagDescription ? "opblock-tag no-desc" : "opblock-tag" }
-          id={isShownKey.map(v => escapeDeepLinkPath(v)).join("-")}
+          id={isShownKey.map(v => escapeDeepLinkPath(v)).join("—")}
           data-tag={tag}
           data-is-open={showTag}
           >
           <DeepLink
             enabled={isDeepLinkingEnabled}
             isShown={showTag}
-            path={createDeepLinkPath(tag)}
+            path={isShownKey.map(v => escapeDeepLinkPath(v)).join("—")}
             text={tag} />
           { !tagDescription ? <small></small> :
             <small>

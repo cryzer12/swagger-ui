@@ -1,6 +1,6 @@
 import { setHash } from "./helpers"
 import zenscroll from "zenscroll"
-import { createDeepLinkPath } from "core/utils"
+import { createDeepLinkPath, escapeDeepLinkPath } from "core/utils"
 import Im, { fromJS } from "immutable"
 
 const SCROLL_TO = "layout_scroll_to"
@@ -9,7 +9,7 @@ const CLEAR_SCROLL_TO = "layout_clear_scroll"
 export const show = (ori, { getConfigs, layoutSelectors }) => (...args) => {
   ori(...args)
 
-  if(!getConfigs().deepLinking) {
+  if (!getConfigs().deepLinking) {
     return
   }
 
@@ -22,7 +22,7 @@ export const show = (ori, { getConfigs, layoutSelectors }) => (...args) => {
     const urlHashArray = layoutSelectors.urlHashArrayFromIsShownKey(tokenArray) // Will convert
 
     // No hash friendly list?
-    if(!urlHashArray.length)
+    if (!urlHashArray.length)
       return
 
     const [type, assetName] = urlHashArray
@@ -30,11 +30,10 @@ export const show = (ori, { getConfigs, layoutSelectors }) => (...args) => {
     if (!shown) {
       return setHash("/")
     }
-
     if (urlHashArray.length === 2) {
-      setHash(createDeepLinkPath(`/${encodeURIComponent(type)}/${encodeURIComponent(assetName)}`))
+      setHash(createDeepLinkPath(`operations—${encodeURIComponent(escapeDeepLinkPath(type))}—${encodeURIComponent(assetName)}`))
     } else if (urlHashArray.length === 1) {
-      setHash(createDeepLinkPath(`/${encodeURIComponent(type)}`))
+      setHash(createDeepLinkPath(`${encodeURIComponent(escapeDeepLinkPath(type))}`))
     }
 
   } catch (e) {
@@ -47,70 +46,70 @@ export const show = (ori, { getConfigs, layoutSelectors }) => (...args) => {
 export const scrollTo = (path) => {
   return {
     type: SCROLL_TO,
-    payload: Array.isArray(path) ? path : [path]
+    payload: Array.isArray(path) ? path : [path],
   }
 }
 
 export const parseDeepLinkHash = (rawHash) => ({ layoutActions, layoutSelectors, getConfigs }) => {
 
-  if(!getConfigs().deepLinking) {
+  if (!getConfigs().deepLinking) {
     return
   }
 
-  if(rawHash) {
+  if (rawHash) {
     let hash = rawHash.slice(1) // # is first character
 
 
-    if(hash[0] === "!") {
+    if (hash[0] === "!") {
       // Parse UI 2.x shebangs
       hash = hash.slice(1)
     }
 
-    if(hash[0] === "/") {
+    if (hash[0] === "—") {
       // "/pet/addPet" => "pet/addPet"
       // makes the split result cleaner
       // also handles forgotten leading slash
       hash = hash.slice(1)
     }
 
-    const hashArray = hash.split("/").map(val => (val || ""))
+    const hashArray = hash.split("—").map(val => (val || ""))
 
     const isShownKey = layoutSelectors.isShownKeyFromUrlHashArray(hashArray)
 
     const [type, tagId = "", maybeOperationId = ""] = isShownKey
 
-    if(type === "operations") {
+    if (type === "operations") {
       // we're going to show an operation, so we need to expand the tag as well
       const tagIsShownKey = layoutSelectors.isShownKeyFromUrlHashArray([tagId])
-
       // If an `_` is present, trigger the legacy escaping behavior to be safe
       // TODO: remove this in v4.0, it is deprecated
-      if(tagId.indexOf("_") > -1) {
+      if (tagId.indexOf("_") > -1) {
         console.warn("Warning: escaping deep link whitespace with `_` will be unsupported in v4.0, use `%20` instead.")
         layoutActions.show(tagIsShownKey.map(val => val.replace(/_/g, " ")), true)
+      } else {
+        layoutActions.show(tagIsShownKey, true)
       }
-
-      layoutActions.show(tagIsShownKey, true)
     }
-
     // If an `_` is present, trigger the legacy escaping behavior to be safe
     // TODO: remove this in v4.0, it is deprecated
     if (tagId.indexOf("_") > -1 || maybeOperationId.indexOf("_") > -1) {
       console.warn("Warning: escaping deep link whitespace with `_` will be unsupported in v4.0, use `%20` instead.")
       layoutActions.show(isShownKey.map(val => val.replace(/_/g, " ")), true)
+      layoutActions.scrollTo(isShownKey.map(val => val.replace(/_/g, " ")))
+    } else {
+      layoutActions.show(isShownKey, true)
+      layoutActions.scrollTo(isShownKey)
     }
 
-    layoutActions.show(isShownKey, true)
-
     // Scroll to the newly expanded entity
-    layoutActions.scrollTo(isShownKey)
+
   }
 }
 
 export const readyToScroll = (isShownKey, ref) => (system) => {
   const scrollToKey = system.layoutSelectors.getScrollToKey()
 
-  if(Im.is(scrollToKey, fromJS(isShownKey))) {
+  if (Im.is(scrollToKey, fromJS(isShownKey))) {
     system.layoutActions.scrollToElement(ref)
     system.layoutActions.clearScrollTo()
   }
@@ -122,7 +121,7 @@ export const scrollToElement = (ref, container) => (system) => {
     container = container || system.fn.getScrollParent(ref)
     let myScroller = zenscroll.createScroller(container)
     myScroller.to(ref)
-  } catch(e) {
+  } catch (e) {
     console.error(e) // eslint-disable-line no-console
   }
 }
@@ -166,17 +165,17 @@ export default {
         scrollTo,
         clearScrollTo,
         readyToScroll,
-        parseDeepLinkHash
+        parseDeepLinkHash,
       },
       selectors: {
         getScrollToKey(state) {
           return state.get("scrollToKey")
         },
         isShownKeyFromUrlHashArray(state, urlHashArray) {
-          const [tag, operationId] = urlHashArray
+          const [type, tag, operationId] = urlHashArray
           // We only put operations in the URL
-          if(operationId) {
-            return ["operations", tag, operationId]
+          if (operationId) {
+            return [type, tag, operationId]
           } else if (tag) {
             return ["operations-tag", tag]
           }
@@ -185,7 +184,7 @@ export default {
         urlHashArrayFromIsShownKey(state, isShownKey) {
           let [type, tag, operationId] = isShownKey
           // We only put operations in the URL
-          if(type == "operations") {
+          if (type == "operations") {
             return [tag, operationId]
           } else if (type == "operations-tag") {
             return [tag]
@@ -199,11 +198,11 @@ export default {
         },
         [CLEAR_SCROLL_TO](state) {
           return state.delete("scrollToKey")
-        }
+        },
       },
       wrapActions: {
-        show
-      }
-    }
-  }
+        show,
+      },
+    },
+  },
 }

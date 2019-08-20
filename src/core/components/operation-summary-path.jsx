@@ -43,7 +43,7 @@ export default class OperationSummaryPath extends PureComponent{
         <DeepLink
             enabled={isDeepLinkingEnabled}
             isShown={isShown}
-            path={createDeepLinkPath(`${tag}/${operationId}`)}
+            path={this.props.path}
             text={path.replace(/\//g, "\u200b/")} />
       </span>
 
