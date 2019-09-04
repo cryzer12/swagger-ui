@@ -14,7 +14,8 @@ export default class Execute extends Component {
 
   onClick=()=>{
     let { specSelectors, specActions, operation, path, method } = this.props
-
+    specActions.clearResponse( path, method )
+    specActions.clearRequest( path, method )
     specActions.validateParams( [path, method] )
 
     if ( specSelectors.validateBeforeExecute([path, method]) ) {

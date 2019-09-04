@@ -20,7 +20,7 @@ export default class ResponseBody extends React.PureComponent {
 
   updateParsedContent = (prevContent) => {
     const { content } = this.props
-
+    console.log(content)
     if(prevContent === content) {
       return
     }
@@ -150,7 +150,7 @@ export default class ResponseBody extends React.PureComponent {
     }
 
     return ( !bodyEl ? null : <div>
-        <h5>Response body</h5>
+        <h5>Тело ответа</h5>
         { bodyEl }
       </div>
     )
